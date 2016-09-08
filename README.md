@@ -1,4 +1,5 @@
-# loger 將事件紀錄下來，幫你的log加上色彩
+# loger 
+將事件紀錄下來，幫你的log加上色彩
 
 ## 簡介
 
@@ -29,7 +30,7 @@ var loger = require('loger')({
 
 它會把值印給你看：
 
-![property image](https://s13.postimg.org/5styus4b7/Screenshot_2016_09_09_01_19_21.png)
+[![Screenshot 2016-09-09 01.19.21.png](https://s15.postimg.org/drz5hqae3/Screenshot_2016_09_09_01_19_21.png)](https://postimg.org/image/baneagqhj/)
 
 
 ### 彩色的log訊息
