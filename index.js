@@ -3,18 +3,35 @@
 var util = require('util');
 var MongoClient = require('mongodb').MongoClient
 , assert = require('assert');
-var colors = require('colors/safe');
+var colors = require('colors');
 var poolModule = require('generic-pool');
+var key = {
+  silly: 'rainbow',
+  input: 'grey',
+  verbose: 'cyan',
+  prompt: 'grey',
+  info: 'green',
+  data: 'grey',
+  help: 'cyan',
+  warn: 'yellow',
+  debug: 'blue',
+  error: 'red',
+  log: 'green'
+}
+colors.setTheme(key);
 
 var created;
-var Logger = function Logger(option) {
+var Loger = function Loger(option) {
   if(!created){
-    option.safe = option.safe || true;
-    option.poolSize = option.poolSize || 1;
-    option.max = option.max || 100;
-    option.min = option.min || 3;
-    option.idleTimeoutMillis = option.idleTimeoutMillis || 30000;
-    option.log = option.log || false;
+
+    var methods = Object.keys(key);
+    option.safe = option.safe !== false; //default true, undefined: true, false: false, true:true, others: true
+    option.poolSize = (typeof option.poolSize === 'integer') ? option.poolSize : 1;
+    option.max = (typeof option.max === 'integer') ? option.max : 100;
+    option.min = (typeof option.min === 'integer') ? option.min : 3;
+    option.idleTimeoutMillis = (typeof option.idleTimeoutMillis === 'integer') ? option.idleTimeoutMillis : 30000;
+    option.log = option.log === true;   //default false, undefined: false, false: false, true:true, others: false
+    option.color_mode = option.color_mode !== false;
 
     var self = this;
     var isOpen = false;
@@ -68,25 +85,32 @@ var Logger = function Logger(option) {
 
     process.on('SIGINT', cleanup);
 
-    this.log = function Logger(message){
-
-      if (process.env.NODE_ENV !== 'production'){
-        var new_message = []
-        new_message.push(colors.yellow(util.inspect(message)))
-        if(arguments.length > 1){
-          for (var i=1;i < arguments.length;i++){
-            new_message.push(colors.green(util.inspect(arguments[i])));
+    var generateLoger = function(callerName){
+      return function(message){
+        if (process.env.NODE_ENV !== 'production'){
+          var new_message = []
+          new_message.push(util.inspect(message))
+          if(arguments.length > 1){
+            for (var i=1;i < arguments.length;i++){
+              new_message.push(util.inspect(arguments[i]));
+            }
           }
-        }
 
-        if (arguments.callee.caller.name != '') {
-          console.log('🚦 ' + colors.bgBlue(arguments.callee.caller.name+':') + new_message.join(','))
-        }else{
-          console.log('🚦 ' + new_message.join(','))
+          var str = new_message.join(',');
+          if (option.color_mode){
+            if (methods.indexOf(callerName) != -1) {
+              str = colors[callerName](str)
+            }else{
+              str = colors.info(str)
+            }
+          }
+          console.log('🚦 '+ str);
         }
-      }
-    }
-    this.stat = function Logger(collection_name, data, time) {
+      };
+    };
+
+
+    this.stat = function Loger(collection_name, data, time) {
 
       data.time = time || new Date();
       // Get the documents collection
@@ -101,19 +125,23 @@ var Logger = function Logger(option) {
     });
     }
 
-    this.statWithlog = function Logger(collection_name, data, time) {
+    this.statWithlog = function Loger(collection_name, data, time) {
       self.log(collection_name, data)
       self.stat(collection_name, data, time);
     }
 
-    this.log(option)
-
     created = this;
+
+    methods.forEach(function(item){
+      created[item] = generateLoger(item);
+    });
+
+    this.log(option)
   }
 
   return created;
 };
 
 
-var logger = module.exports = exports = Logger;
+var loger = module.exports = exports = Loger;
 
