@@ -25,6 +25,7 @@ var Loger = function Loger(option) {
   if(!created){
 
     var methods = Object.keys(key);
+    option = (typeof option === 'object') ? option : {};
     option.safe = option.safe !== false; //default true, undefined: true, false: false, true:true, others: true
     option.poolSize = (typeof option.poolSize === 'integer') ? option.poolSize : 1;
     option.max = (typeof option.max === 'integer') ? option.max : 100;
