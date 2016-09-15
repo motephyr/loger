@@ -2,11 +2,11 @@
 
 var Loger = require("../index.js"),
   should = require('chai').should();
-  sinon = require('sinon');
+//  sinon = require('sinon');
 
 describe("Test Loger", function() {
-  describe('initial', function() {
-    var loger = Loger()
+  describe('mongodb', function() {
+    var loger = Loger({db: 'mongodb://localhost:27017/logertest'})
 
     it('should initial once',function(){
         var another_loger = Loger({a: 1})
@@ -37,6 +37,12 @@ describe("Test Loger", function() {
     it('test error',function(){
         loger.should.respondTo('error')
     });
+
+    it('test statWithlog',function(){
+        loger.statWithlog("test",{a: 1});
+        loger.should.respondTo('statWithlog')
+    });
+
   // pending test below
   });
   // before(function() {

@@ -1,6 +1,6 @@
 {
   "name": "loger",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "Log your message and event",
   "main": "index.js",
   "scripts": {
@@ -27,8 +27,7 @@
     "util",
     "mongodb",
     "assert",
-    "colors",
-    "generic-pool"
+    "colors"
   ],
   "devDependencies": {
     "chai": "^3.5.0",
