@@ -83,7 +83,7 @@ var Loger = function Loger(option) {
         if(err){
           this.log("Mongodb is not start");
 
-         throw err;
+          return;
         }
 
         assert.equal(null, err);
