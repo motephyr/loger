@@ -32,7 +32,7 @@ var Loger = function Loger(option) {
 
     var generateLoger = function(callerName){
       return function(message){
-        if (process.env.NODE_ENV !== 'production'){
+        // if (process.env.NODE_ENV !== 'production'){
           var new_message = []
           new_message.push(util.inspect(message))
           if(arguments.length > 1){
@@ -50,7 +50,7 @@ var Loger = function Loger(option) {
             }
           }
           console.log('🚦 '+ str);
-        }
+        // }
       };
     };
 
