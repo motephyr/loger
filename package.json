@@ -1,6 +1,6 @@
 {
   "name": "loger",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Log your message and event",
   "main": "index.js",
   "scripts": {
@@ -23,12 +23,12 @@
     "url": "https://github.com/motephyr/logger/issues"
   },
   "homepage": "https://github.com/motephyr/logger#readme",
-  "dependencies": [
-    "util",
-    "mongodb",
-    "assert",
-    "colors"
-  ],
+  "dependencies": {
+    "util": "0.10.3",
+    "mongodb": "2.2.11",
+    "assert": "1.4.1",
+    "colors": "1.1.2"
+  },
   "devDependencies": {
     "chai": "^3.5.0",
     "sinon": "^1.17.5"
